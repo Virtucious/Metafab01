@@ -10,11 +10,7 @@ public class WalletConnection : MonoBehaviour
 {
 	public Chain chain = Chain.MATICMUMBAI;
 
-	public string playerUsername = "sample-player";
-	public string playerPassword = "password";
-
-	public string currencyName = "My Test Coin";
-	public string currencySymbol = "$MYTEST";
+	
 
 	public async void GetWallet()
     {
