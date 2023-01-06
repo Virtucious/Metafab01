@@ -549,10 +549,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chain: 4
-  playerUsername: sample-player
-  playerPassword: password
-  currencyName: My Test Coin
-  currencySymbol: $MYTEST
 --- !u!4 &1465026495
 Transform:
   m_ObjectHideFlags: 0
