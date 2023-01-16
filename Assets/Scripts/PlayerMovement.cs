@@ -5,8 +5,10 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float playerSpeed = 5.0f;
 
     private Rigidbody2D _playerRigidbody;
+    private Animator animator;
     private void Start()
     {
+        animator = GetComponent<Animator>();
         _playerRigidbody = GetComponent<Rigidbody2D>();
         if (_playerRigidbody == null)
         {
@@ -19,8 +21,27 @@ public class PlayerMovement : MonoBehaviour
     }
     private void MovePlayer()
     {
-        var horizontalInput = Input.GetAxisRaw("Horizontal");
-        _playerRigidbody.velocity = new Vector2(horizontalInput * playerSpeed, _playerRigidbody.velocity.y);
+        if (Input.GetKey(KeyCode.A))
+        {
+            Vector3 currentScale = gameObject.transform.localScale;
+            currentScale.x = -1;
+            gameObject.transform.localScale = currentScale; 
+            _playerRigidbody.velocity = new Vector2(-1 * playerSpeed, _playerRigidbody.velocity.y);
+            animator.SetBool("Move", true);
+        }
+        else if (Input.GetKey(KeyCode.D))
+        {
+            Vector3 currentScale = gameObject.transform.localScale;
+            currentScale.x = 1;
+            gameObject.transform.localScale = currentScale;
+            _playerRigidbody.velocity = new Vector2(1 * playerSpeed, _playerRigidbody.velocity.y);
+            animator.SetBool("Move", true);
+        }
+        else
+        {
+            animator.SetBool("Move", false);
+        }
+
     }
 
 
