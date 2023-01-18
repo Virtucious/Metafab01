@@ -3,6 +3,7 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private float playerSpeed = 5.0f;
+    [SerializeField] private float jumpPower = 1f;
 
     private Rigidbody2D _playerRigidbody;
     private Animator animator;
@@ -21,6 +22,7 @@ public class PlayerMovement : MonoBehaviour
     }
     private void MovePlayer()
     {
+        animator.SetBool("isGrounded", true);
         if (Input.GetKey(KeyCode.A))
         {
             Vector3 currentScale = gameObject.transform.localScale;
@@ -37,12 +39,28 @@ public class PlayerMovement : MonoBehaviour
             _playerRigidbody.velocity = new Vector2(1 * playerSpeed, _playerRigidbody.velocity.y);
             animator.SetBool("Move", true);
         }
-        else
+        else if (Input.GetKeyDown(KeyCode.Space))
         {
+            var ground = Physics2D.Raycast(transform.position, Vector2.down, 0.3f);
+            _playerRigidbody.AddForce(transform.up * jumpPower);
+            if (ground.collider != null)
+            {
+                animator.SetBool("isGrounded", false);
+
+            }
+            else
+            {
+                animator.SetBool("isGrounded", true);
+            }
+
+
+        }
+        else
+        { 
             animator.SetBool("Move", false);
         }
-
     }
+
 
 
 }
