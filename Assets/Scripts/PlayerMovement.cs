@@ -18,26 +18,30 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
+
+        if (_playerRigidbody.velocity.y == 0)
+        {
+            animator.SetBool("isJumping", false);
+            animator.SetBool("isFalling", false);
+        }
+        else if (_playerRigidbody.velocity.y < 0)
+        {
+            animator.SetBool("isJumping", false);
+            animator.SetBool("isFalling", true);
+        }
+        else if (_playerRigidbody.velocity.y >0)
+        {
+            animator.SetBool("isJumping", true);
+            animator.SetBool("isFalling", false);
+        }
         MovePlayer();
     }
 
     private void MovePlayer()
     {
         var ground = Physics2D.Raycast(transform.position, Vector2.down, 0.7f);
-        Debug.Log(_playerRigidbody.velocity.y);
-        if (_playerRigidbody.velocity.y == 0)
-        {
-            animator.SetBool("isFalling", false);
-            animator.SetBool("isJumping", false);
-        }
-        if (_playerRigidbody.velocity.y > 0)
-        {
-            animator.SetBool("isJumping", true);
-        }
-        if (_playerRigidbody.velocity.y < 100)
-        {
-            animator.SetBool("isFalling", true);
-        }
+        
+        
         if (Input.GetKey(KeyCode.A))
         {
             Vector3 currentScale = gameObject.transform.localScale;
@@ -58,7 +62,7 @@ public class PlayerMovement : MonoBehaviour
         {
             if (ground.collider != null)
             {
-                _playerRigidbody.AddForce(new Vector2(0, 10), ForceMode2D.Impulse);
+                _playerRigidbody.AddForce(new Vector2(0, 0.1f), ForceMode2D.Impulse);
             }
         }
     }
