@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -7,8 +8,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float buttonTime = 0.3f;
     [SerializeField] private float cancelRate = 100f;
     private float jumptime;
-    private bool jumping;
-    private bool jumpCancelled;
+    bool jumping;
+    bool jumpCancelled;
 
     private Rigidbody2D _playerRigidbody;
     private Animator animator;
@@ -68,28 +69,25 @@ public class PlayerMovement : MonoBehaviour
     {
         var ground = Physics2D.Raycast(transform.position, Vector2.down, 0.5f);
 
-        if (ground.collider != null)
+        if (Input.GetKeyDown(KeyCode.Space))
         {
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                float jumpForce = Mathf.Sqrt(jumpHeight * -2 * (Physics2D.gravity.y * _playerRigidbody.gravityScale));
-                _playerRigidbody.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
-                jumping = true;
-                jumpCancelled = false;
-                jumptime = 0f;
-            }
+            float jumpForce = Mathf.Sqrt(jumpHeight * -2 * (Physics2D.gravity.y * _playerRigidbody.gravityScale));
+            _playerRigidbody.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
+            jumping = true;
+            jumpCancelled = false;
+            jumptime = 0f;
+        }
 
-            if (jumping)
+        if (jumping)
+        {
+            jumptime += Time.deltaTime;
+            if(Input.GetKeyUp(KeyCode.Space))
             {
-                jumptime += Time.deltaTime;
-                if (Input.GetKeyUp(KeyCode.Space))
-                {
-                    jumpCancelled = true;
-                }
-                if (jumptime > buttonTime)
-                {
-                    jumping = false;
-                }
+                jumpCancelled = true;
+            }
+            if (jumptime > buttonTime)
+            {
+                jumping = false;
             }
         }
     }
